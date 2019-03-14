@@ -54,44 +54,32 @@ First of all, the format should be based on the JSON format to enable easy under
 
 ```JSON
 {
-  "type": "string",
+  "name": "${argument_name}",
+  "type": "${argument_type}",
   "optional": true,
   "options": "#{Argument options object}"
 }
 ```
 
-1. `type`: The type of this input, for example `string` or `int`.
-2. `optional`: Whether this argument is optional.
-3. `options`: An [ArgumentOptionsObject](#AugumentOptionsObject).
-
-### ArgumentsObject:
-
-```JSON
-{
-  "${argument_name}": "#{Argument object}",
-  "${argument_name}": "#{Argument object}"
-}
-```
-
-Each key inside this object should be the name of an argument, for example `q` or `query`.
-
-Value of each key should be an [ArgumentObject](#ArgumentObject).
+1. `name`: The name of the argument. For example `q` or `query`.
+2. `type`: The type of this input, for example `string` or `int`.
+3. `optional`: Whether this argument is optional.
+4. `options`: An [ArgumentOptionsObject](#AugumentOptionsObject).
 
 ### APIInputObject:
 
 ```JSON
 {
-  "body": "#{ArgumentsObject}",
-  "query": "#{ArgumentsObject}",
-  "param": "#{ArgumentsObject}",
-  "header": "#{ArgumentsObject}"
+  "body": ["#{ArgumentObject}"],
+  "query": ["#{ArgumentObject}"],
+  "param": ["#{ArgumentObject}"],
+  "header": ["#{ArgumentObject}"]
 }
 ```
 
-1. `body`: Containing an [ArgumentsObject](#ArgumentsObject). All arguments inside this object is located inside the body of a HTTP request.
-2. `query`: The same as `body`, but arguments here is located inside the query of a HTTP request.
-3. `param`: Besides the arguments inside the param of a HTTP request, this also contains parameters for functions and GraphQL endpoints parameters.
-4. `header`: Containing an [ArgumentsObject](#ArgumentsObject). All arguments inside this object is located inside the header of a HTTP request.
+All fields inside this object should contain a list of [ArgumentObject](#ArgumentObject) specifying all possible inputs for the API.
+
+Regarding arguments for functions and GraphQL endpoints, they should be put into `param` field.
 
 ```JSON
 {
