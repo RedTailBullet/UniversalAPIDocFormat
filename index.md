@@ -31,7 +31,7 @@ In GraphQL, the identifier of an API should be the name of the Graphql endpoint 
 
 First of all, the format should be based on the JSON format to enable easy understanding for both human and machine.
 
-### Argument options object:
+### ArgumentOptionsObject:
 
 ```JSON
 {
@@ -39,7 +39,8 @@ First of all, the format should be based on the JSON format to enable easy under
   "max": 100.0,
   "default": "${default_value}",
   "length": 10,
-  "transCase": "none"
+  "transCase": "none",
+  "value": "${set_value}"
 }
 ```
 
@@ -47,28 +48,50 @@ First of all, the format should be based on the JSON format to enable easy under
 2. `default`: The default value for this argument. Can be of any type.
 3. `length`: Length restriction for argument. Only apply to array like argument such as string.
 4. `transCase`: Whether to transfer the case of the input and what case should it be. Only apply to string input.
+5. `value`: A set value that the input have to match.
 
-### Argument object:
+### ArgumentObject:
 
 ```JSON
 {
   "type": "string",
   "optional": true,
-  "options": "#Argument options object"
+  "options": "#{Argument options object}"
 }
 ```
 
 1. `type`: The type of this input, for example `string` or `int`.
 2. `optional`: Whether this argument is optional.
-3. `options`: An [ArgumentOptionsObject](#augument-options-object).
+3. `options`: An [ArgumentOptionsObject](#AugumentOptionsObject).
 
-### Argument location object:
+### ArgumentsObject:
 
 ```JSON
 {
-  
+  "${argument_name}": "#{Argument object}",
+  "${argument_name}": "#{Argument object}"
 }
 ```
+
+Each key inside this object should be the name of an argument, for example `q` or `query`.
+
+Value of each key should be an [ArgumentObject](#ArgumentObject).
+
+### APIInputObject:
+
+```JSON
+{
+  "body": "#{ArgumentsObject}",
+  "query": "#{ArgumentsObject}",
+  "param": "#{ArgumentsObject}",
+  "header": "#{ArgumentsObject}"
+}
+```
+
+1. `body`: Containing an [ArgumentsObject](#ArgumentsObject). All arguments inside this object is located inside the body of a HTTP request.
+2. `query`: The same as `body`, but arguments here is located inside the query of a HTTP request.
+3. `param`: Besides the arguments inside the param of a HTTP request, this also contains parameters for functions and GraphQL endpoints parameters.
+4. `header`: Containing an [ArgumentsObject](#ArgumentsObject). All arguments inside this object is located inside the header of a HTTP request.
 
 ```JSON
 {
